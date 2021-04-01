@@ -1,4 +1,4 @@
-namespace DIO.Series
+namespace DIO.ProverdorStreaming
 {
     public abstract class EntidadeBase
     {
