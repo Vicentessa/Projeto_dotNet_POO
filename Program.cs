@@ -24,7 +24,9 @@ namespace DIO.ProverdorStreaming
 					case "C":
 						Console.Clear();
 						break;
-
+					case "X":
+						Console.Clear();
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -38,12 +40,105 @@ namespace DIO.ProverdorStreaming
 
         private static void Streaming_Serie()
         {
-            throw new NotImplementedException();
+			Console.Clear();
+			string opcaoUsuario;
+
+			// Substituí o (While) por (do...while) para não repetir a chamada do método MenuSerie
+            do
+			{
+				// Método MenuSerie para apresentar as opções para o usuário
+				opcaoUsuario = MenuSerie();
+				
+				switch (opcaoUsuario)
+				{
+					case "1":
+						ListarSeries();
+						break;
+					case "2":
+						InserirSerie();
+						break;
+					case "3":
+						AtualizarSerie();
+						break;
+					case "4":
+						ExcluirSerie();
+						break;
+					case "5":
+						VisualizarSerie();
+						break;
+					case "C":
+						Console.Clear();
+						break;
+					case "X":
+						Console.Clear();
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+
+				/* 
+				   Uma pausa para que o usuário veja as informações e depois 
+				   ao pressionar uma tecla apresente o Menu.
+				*/
+				if (opcaoUsuario.ToUpper() != "X")
+				{
+					Console.WriteLine("");
+					Console.Write("Pressione uma tecla p/ continuar... ");
+					Console.ReadLine();
+					Console.Clear();
+				}
+				
+			} while (opcaoUsuario.ToUpper() != "X");
         }
 
         private static void Streaming_Filme()
         {
-            throw new NotImplementedException();
+			Console.Clear();
+			string opcaoUsuario;
+            do
+			{
+				opcaoUsuario = MenuFilme();
+
+				switch (opcaoUsuario)
+				{
+					case "1":
+						ListarFilmes();
+						break;
+					case "2":
+						InserirFilme();
+						break;
+					case "3":
+						AtualizarFilme();
+						break;
+					case "4":
+						ExcluirFilme();
+						break;
+					case "5":
+						VisualizarFilme();
+						break;
+					case "C":
+						Console.Clear();
+						break;
+					case "X":
+						Console.Clear();
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+
+				/* 
+				   Uma pausa para que o usuário veja as informações e depois 
+				   ao pressionar uma tecla apresente o Menu.
+				*/
+				if (opcaoUsuario.ToUpper() != "X")
+				{
+					Console.WriteLine("");
+					Console.Write("Pressione uma tecla p/ continuar... ");
+					Console.ReadLine();
+					Console.Clear();
+				}
+
+			} while (opcaoUsuario.ToUpper() != "X");
         }
 
         private static void ExcluirSerie()
@@ -59,8 +154,15 @@ namespace DIO.ProverdorStreaming
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
-			var serie = repositorioSerie.RetornaPorId(indiceSerie);
+			var lista = repositorioSerie.Lista();
 
+			if (lista.Count == 0)
+			{
+				Console.WriteLine("Série não cadastrada!");
+				return;
+			}
+
+			var serie = repositorioSerie.RetornaPorId(indiceSerie);
 			Console.WriteLine(serie);
 		}
 
@@ -146,6 +248,156 @@ namespace DIO.ProverdorStreaming
 			repositorioSerie.Insere(novaSerie);
 		}
 
+		// Manutenção de filmes
+
+		private static void ExcluirFilme()
+		{
+			Console.Write("Digite o id do filme: ");
+			int indiceFilme = int.Parse(Console.ReadLine());
+
+			repositorioFilme.Exclui(indiceFilme);
+		}
+
+		private static void VisualizarFilme()
+		{
+			Console.Write("Digite o id do Filme: ");
+			int indiceFilme = int.Parse(Console.ReadLine());
+			bool encontrado = false;
+
+			var lista = repositorioFilme.Lista();
+			
+			for (int i = 0; i < lista.Count; i++)
+			{
+				if (lista[i].Id == indiceFilme)
+				{
+					encontrado = true;
+				}
+			}
+
+			if (lista.Count == 0)
+			{
+				Console.WriteLine("Catálogo de filmes vazio!");
+				return;
+			}
+			else
+			{
+				if (!encontrado)
+				{
+					Console.WriteLine("Filme não cadastrado!");
+					return;
+				}
+			}
+
+			var filme = repositorioFilme.RetornaPorId(indiceFilme);
+				if (filme.Id == indiceFilme)
+				{
+					Console.WriteLine(filme);
+				}
+				else
+				{
+					Console.WriteLine("Filme não cadastrado!");
+				}
+			
+		}
+
+        private static void AtualizarFilme()
+		{
+			Console.Write("Digite o id do filme: ");
+			int indiceFilme = int.Parse(Console.ReadLine());
+		
+			foreach (int i in Enum.GetValues(typeof(Genero)))
+			{
+				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
+			}
+			Console.Write("Digite o gênero entre as opções acima: ");
+			int entradaGenero = int.Parse(Console.ReadLine());
+			
+			foreach (int i in Enum.GetValues(typeof(Classificacao)))
+			{
+				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Classificacao), i));
+			}
+			Console.Write("Digite a classificação entre as opções acima: ");
+			int entradaClassificacao = int.Parse(Console.ReadLine());
+
+			Console.Write("Digite o Título do filme: ");
+			string entradaTitulo = Console.ReadLine();
+
+			Console.Write("Digite o Ano de Início do filme: ");
+			int entradaAno = int.Parse(Console.ReadLine());
+
+			Console.Write("Digite a Descrição do filme: ");
+			string entradaDescricao = Console.ReadLine();
+
+			Filme atualizaFilme = new Filme(id: indiceFilme,
+										genero: (Genero)entradaGenero,
+										classificacao: (Classificacao)entradaClassificacao,
+										titulo: entradaTitulo,
+										ano: entradaAno,
+										descricao: entradaDescricao);
+
+			repositorioFilme.Atualiza(indiceFilme, atualizaFilme);
+		}
+		
+        private static void ListarFilmes()
+		{
+			Console.WriteLine("Listar filmes");
+
+			var lista = repositorioFilme.Lista();
+
+			if (lista.Count == 0)
+			{
+				Console.WriteLine("Nenhuma filme cadastrado.");
+				return;
+			}
+
+			foreach (var filme in lista)
+			{
+                var excluido = filme.retornaExcluido();
+                
+				Console.WriteLine("#ID {0}: - {1} {2}", filme.retornaId(), filme.retornaTitulo(), (excluido ? "*Excluído*" : ""));
+			}
+		}
+
+        private static void InserirFilme()
+		{
+			Console.WriteLine("Inserir novo filme");
+
+			foreach (int i in Enum.GetValues(typeof(Genero)))
+			{
+				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
+			}
+			Console.Write("Digite o gênero entre as opções acima: ");
+			int entradaGenero = int.Parse(Console.ReadLine());
+			
+			foreach (int i in Enum.GetValues(typeof(Classificacao)))
+			{
+				Console.Write("{0}-{1} ", i, Enum.GetName(typeof(Classificacao), i));
+			}
+
+			Console.WriteLine("Digite a Classificação entre as opções acima: ");
+			int entradaClassificacao = int.Parse(Console.ReadLine());
+
+			Console.Write("Digite o Título do filme: ");
+			string entradaTitulo = Console.ReadLine();
+
+			Console.Write("Digite o Ano de Início do filme: ");
+			int entradaAno = int.Parse(Console.ReadLine());
+
+			Console.Write("Digite a Descrição do filme: ");
+			string entradaDescricao = Console.ReadLine();
+
+			Filme novoFilme = new Filme(id: repositorioFilme.ProximoId(),
+										genero: (Genero)entradaGenero,
+										classificacao: (Classificacao)entradaClassificacao,
+										titulo: entradaTitulo,
+										ano: entradaAno,
+										descricao: entradaDescricao);
+
+			repositorioFilme.Insere(novoFilme);
+
+		}
+
+		// Menus com as opções
 		private static string ObterOpcaoUsuario()
 		{
 			Console.WriteLine();
@@ -168,14 +420,15 @@ namespace DIO.ProverdorStreaming
 			Console.WriteLine();
 			Console.WriteLine("DIO Séries a seu dispor!!!");
 			Console.WriteLine("Informe a opção desejada:");
-
-			Console.WriteLine("1- Listar séries");
-			Console.WriteLine("2- Inserir nova série");
-			Console.WriteLine("3- Atualizar série");
-			Console.WriteLine("4- Excluir série");
-			Console.WriteLine("5- Visualizar série");
-			Console.WriteLine("C- Limpar Tela");
-			Console.WriteLine("S- Sair");
+			Console.WriteLine("--------------------------");
+			Console.WriteLine("1 - Listar Séries");
+			Console.WriteLine("2 - Inserir nova Série");
+			Console.WriteLine("3 - Atualizar Série");
+			Console.WriteLine("4 - Excluir Série");
+			Console.WriteLine("5 - Visualizar Série");
+			Console.WriteLine("C - Limpar Tela");
+			Console.WriteLine("--------------------------");			
+			Console.WriteLine("X - Sair");
 			Console.WriteLine();
 
 			string opcaoUsuario = Console.ReadLine().ToUpper();
@@ -189,13 +442,14 @@ namespace DIO.ProverdorStreaming
 			Console.WriteLine("DIO Filmes a seu dispor!!!");
 			Console.WriteLine("Informe a opção desejada:");
 			Console.WriteLine("--------------------------");
-			Console.WriteLine("1- Listar filmes");
-			Console.WriteLine("2- Inserir novo filme");
-			Console.WriteLine("3- Atualizar filme");
-			Console.WriteLine("4- Excluir filme");
-			Console.WriteLine("5- Visualizar filme");
-			Console.WriteLine("C- Limpar Tela");
-			Console.WriteLine("S- Sair");
+			Console.WriteLine("1 - Listar filmes");
+			Console.WriteLine("2 - Inserir novo filme");
+			Console.WriteLine("3 - Atualizar filme");
+			Console.WriteLine("4 - Excluir filme");
+			Console.WriteLine("5 - Visualizar filme");
+			Console.WriteLine("C - Limpar Tela");
+			Console.WriteLine("--------------------------");			
+			Console.WriteLine("X - Sair");
 			Console.WriteLine();
 
 			string opcaoUsuario = Console.ReadLine().ToUpper();

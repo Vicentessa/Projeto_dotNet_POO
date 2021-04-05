@@ -50,5 +50,6 @@ namespace DIO.ProverdorStreaming
         public void Excluir() {
             this.Excluido = true;
         }
+		
     }
 }
