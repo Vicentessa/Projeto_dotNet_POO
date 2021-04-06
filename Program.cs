@@ -9,6 +9,7 @@ namespace DIO.ProverdorStreaming
         static void Main(string[] args)
         {
 			string opcaoUsuario = null;
+			// Substituí o (While) por (do...while) para não repetir a chamada do Menu
 			do
 			{
 				opcaoUsuario = ObterOpcaoUsuario();
@@ -146,7 +147,18 @@ namespace DIO.ProverdorStreaming
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
-			repositorioSerie.Exclui(indiceSerie);
+			Console.WriteLine("Tem certeza que deseja excluir?");
+			Console.Write("Tecle (S)im ou (N)ão: ");
+			string opcao = Console.ReadLine().ToUpper();
+
+			if (opcao == "S")
+			{
+				repositorioSerie.Exclui(indiceSerie);
+			}
+			else
+			{
+				Console.Write("Exclusão cancelada!");
+			}
 		}
 
         private static void VisualizarSerie()
@@ -275,7 +287,19 @@ namespace DIO.ProverdorStreaming
 			Console.Write("Digite o id do filme: ");
 			int indiceFilme = int.Parse(Console.ReadLine());
 
-			repositorioFilme.Exclui(indiceFilme);
+			Console.WriteLine("Tem certeza que deseja excluir?");
+			Console.Write("Tecle (S)im ou (N)ão: ");
+			string opcao = Console.ReadLine().ToUpper();
+
+			if (opcao == "S")
+			{
+				repositorioFilme.Exclui(indiceFilme);
+			}
+			else
+			{
+				Console.Write("Exclusão cancelada!");
+			}
+
 		}
         
 		private static void VisualizarFilme()
