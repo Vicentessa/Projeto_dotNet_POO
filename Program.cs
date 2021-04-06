@@ -154,16 +154,36 @@ namespace DIO.ProverdorStreaming
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
+			bool encontrado = false;
 			var lista = repositorioSerie.Lista();
 
 			if (lista.Count == 0)
 			{
-				Console.WriteLine("Série não cadastrada!");
+				Console.WriteLine("Catálogo de série vazio!");
 				return;
 			}
+			else
+			{
+				// Verifica se a série foi encontrada
+				for (int i = 0; i < lista.Count; i++)
+				{
+					if (lista[i].Id == indiceSerie)
+					{
+						encontrado = true;
+					}
+				}
 
-			var serie = repositorioSerie.RetornaPorId(indiceSerie);
-			Console.WriteLine(serie);
+				if (encontrado)
+				{
+					var serie = repositorioSerie.RetornaPorId(indiceSerie);
+					Console.WriteLine(serie);
+				}
+				else
+				{
+					Console.WriteLine("Série não cadastrada!");
+				}
+			}
+			
 		}
 
         private static void AtualizarSerie()
@@ -257,7 +277,7 @@ namespace DIO.ProverdorStreaming
 
 			repositorioFilme.Exclui(indiceFilme);
 		}
-
+        
 		private static void VisualizarFilme()
 		{
 			Console.Write("Digite o id do Filme: ");
@@ -265,38 +285,33 @@ namespace DIO.ProverdorStreaming
 			bool encontrado = false;
 
 			var lista = repositorioFilme.Lista();
-			
-			for (int i = 0; i < lista.Count; i++)
-			{
-				if (lista[i].Id == indiceFilme)
-				{
-					encontrado = true;
-				}
-			}
 
+			// Verifica se o catálogo está vazio
 			if (lista.Count == 0)
 			{
 				Console.WriteLine("Catálogo de filmes vazio!");
-				return;
 			}
 			else
 			{
-				if (!encontrado)
+				// Verifica se o filme foi encontrado
+				for (int i = 0; i < lista.Count; i++)
 				{
-					Console.WriteLine("Filme não cadastrado!");
-					return;
+					if (lista[i].Id == indiceFilme)
+					{
+						encontrado = true;
+					}
 				}
-			}
 
-			var filme = repositorioFilme.RetornaPorId(indiceFilme);
-				if (filme.Id == indiceFilme)
+				if (encontrado)
 				{
+					var filme = repositorioFilme.RetornaPorId(indiceFilme);
 					Console.WriteLine(filme);
 				}
 				else
 				{
 					Console.WriteLine("Filme não cadastrado!");
 				}
+			}
 			
 		}
 
@@ -309,14 +324,14 @@ namespace DIO.ProverdorStreaming
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
 			}
-			Console.Write("Digite o gênero entre as opções acima: ");
+			Console.WriteLine("Digite o gênero entre as opções acima: ");
 			int entradaGenero = int.Parse(Console.ReadLine());
 			
 			foreach (int i in Enum.GetValues(typeof(Classificacao)))
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Classificacao), i));
 			}
-			Console.Write("Digite a classificação entre as opções acima: ");
+			Console.WriteLine("Digite a classificação entre as opções acima: ");
 			int entradaClassificacao = int.Parse(Console.ReadLine());
 
 			Console.Write("Digite o Título do filme: ");
@@ -371,7 +386,7 @@ namespace DIO.ProverdorStreaming
 			
 			foreach (int i in Enum.GetValues(typeof(Classificacao)))
 			{
-				Console.Write("{0}-{1} ", i, Enum.GetName(typeof(Classificacao), i));
+				Console.WriteLine("{0}-{1} ", i, Enum.GetName(typeof(Classificacao), i));
 			}
 
 			Console.WriteLine("Digite a Classificação entre as opções acima: ");
@@ -402,16 +417,14 @@ namespace DIO.ProverdorStreaming
 		{
 			Console.WriteLine();
 			Console.WriteLine("DIO Provedor de Streaming a seu dispor!!!");
-			Console.WriteLine("Informe a opção desejada:");
-			Console.WriteLine("--------------------------");
+			Console.WriteLine("-----------------------------------------");
 			Console.WriteLine("1 - Séries");
 			Console.WriteLine("2 - Filmes");
 			Console.WriteLine("C - Limpar Tela");
 			Console.WriteLine("X - Sair");
-			Console.WriteLine();
-
+			Console.WriteLine("-----------------------------------------");
+			Console.WriteLine("Informe a opção desejada:");
 			string opcaoUsuario = Console.ReadLine().ToUpper();
-			Console.WriteLine();
 			return opcaoUsuario;
 		}
 
@@ -419,7 +432,6 @@ namespace DIO.ProverdorStreaming
 		{
 			Console.WriteLine();
 			Console.WriteLine("DIO Séries a seu dispor!!!");
-			Console.WriteLine("Informe a opção desejada:");
 			Console.WriteLine("--------------------------");
 			Console.WriteLine("1 - Listar Séries");
 			Console.WriteLine("2 - Inserir nova Série");
@@ -430,9 +442,8 @@ namespace DIO.ProverdorStreaming
 			Console.WriteLine("--------------------------");			
 			Console.WriteLine("X - Sair");
 			Console.WriteLine();
-
+			Console.WriteLine("Informe a opção desejada:");
 			string opcaoUsuario = Console.ReadLine().ToUpper();
-			Console.WriteLine();
 			return opcaoUsuario;
 		}
 
@@ -440,7 +451,6 @@ namespace DIO.ProverdorStreaming
 		{
 			Console.WriteLine();
 			Console.WriteLine("DIO Filmes a seu dispor!!!");
-			Console.WriteLine("Informe a opção desejada:");
 			Console.WriteLine("--------------------------");
 			Console.WriteLine("1 - Listar filmes");
 			Console.WriteLine("2 - Inserir novo filme");
@@ -451,9 +461,8 @@ namespace DIO.ProverdorStreaming
 			Console.WriteLine("--------------------------");			
 			Console.WriteLine("X - Sair");
 			Console.WriteLine();
-
+			Console.WriteLine("Informe a opção desejada:");
 			string opcaoUsuario = Console.ReadLine().ToUpper();
-			Console.WriteLine();
 			return opcaoUsuario;
 		}
     }

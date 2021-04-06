@@ -1,12 +1,15 @@
 # Digital Innovation One - Prática .NET
 
-## Criando uma APP de cadastro em memória
+## Modificando uma APP de cadastro em memória
+## Professor: Eliézer Zarpelão
 
 [Slides](dio-dotnet-poo-lab-2.pdf)
 
-## Contato
+## Aluno
 
-Eliézer Zarpelão
+Vicente Sebastian
+
+## Contato Eliézer Zarpelão
 
 Linkedin:  [br.linkedin.com/in/eliezerzarpelao](http://br.linkedin.com/in/eliezerzarpelao)
 
